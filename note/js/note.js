@@ -1,5 +1,5 @@
 // 后端接口基础地址
-let baseUrl = "https://note-system.up.railway.app"
+let baseUrl = "https://notesystem.up.railway.app"
 // 标记当前模式：true登录 / false注册
 let isLoginMode = true
 
