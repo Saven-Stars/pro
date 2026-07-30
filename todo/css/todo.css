@@ -1,0 +1,108 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft Yahei", sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    padding: 40px 20px;
+}
+
+/*总盒子*/
+.containt-box{
+	max-width: 600px;
+    margin: 0 auto;
+}
+/*标题*/
+.title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+/*------输入框样式-------*/
+.enter-box{
+	display: flex;
+    column-gap: 12px;
+    margin-bottom: 25px;
+}
+#input_text {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    outline: none;
+    transition: 0.2s;
+}
+
+#input_text:hover {
+    border-color: #8cff40;
+    box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
+}
+
+
+/*----按钮样式---- */
+/*通用按钮*/
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+/*添加按钮*/
+.add-btn {
+    background-color: #409eff;
+    color: white;
+}
+.add-btn:hover {
+    background-color: #337ecc;
+}
+/*清空按钮*/
+.clear-btn {
+    background-color: #6c757d;
+    color: white;
+}
+.clear-btn:hover {
+    background-color: #5a6268;
+}
+
+/* 删除按钮 */
+.del_btn {
+    padding: 6px 14px;
+    background-color: #f56c6c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.del_btn:hover {
+    background-color: #e04343;
+}
+
+/*------待办列表------*/
+/* 待办列表容器 */
+.todo-box {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+/* 单条待办条目 */
+.todo-box > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    background-color: #fafafa;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
