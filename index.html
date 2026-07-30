@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人开发作品集</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            padding: 60px 20px;
+        }
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .main-title {
+            font-size: 32px;
+            color: #212121;
+            margin-bottom: 10px;
+        }
+        .intro-text {
+            color: #606060;
+            font-size: 16px;
+            margin-bottom: 55px;
+        }
+        .project-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 32px;
+        }
+        .project-card {
+            background: #ffffff;
+            padding: 36px 22px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s;
+        }
+        .project-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 9px 22px rgba(0, 0, 0, 0.11);
+        }
+        .project-card h3 {
+            font-size: 22px;
+            color: #1565c0;
+            margin-bottom: 16px;
+        }
+        .project-card p {
+            color: #757575;
+            font-size: 14px;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+        .enter-btn {
+            padding: 10px 28px;
+            background-color: #1565c0;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 7px;
+            font-size: 15px;
+            transition: background 0.25s;
+        }
+        .enter-btn:hover {
+            background-color: #0d47a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title">个人项目作品集</h1>
+        <p class="intro-text">技术栈：Flask + MySQL + jQuery </p>
+
+        <div class="project-container">
+            <!-- 项目1：待办清单 前后端分离静态页面 -->
+            <div class="project-card">
+                <h3>项目一 待办清单</h3>
+                <p>前后端分离开发，实现代办事项新增、清空、删除、查看</p>
+                <a href="./testDemo_todo/index.html" class="enter-btn" target="_blank">进入项目</a>
+            </div>
+
+            <!-- 项目2 个人笔记系统 前后端分离静态页面 -->
+            <div class="project-card">
+                <h3>项目二 个人笔记系统</h3>
+                <p>前后端分离开发，使用session会话管理实现用户的登录与注册及退出登录，Cookie跨域携带，实现笔记的添加和删除</p>
+                <a href="./testDemo_note/index.html" class="enter-btn" target="_blank">进入项目</a>
+            </div>
+
+            <!-- 项目3 毕业设计购物网站 Flask服务端渲染 -->
+            <div class="project-card">
+                <h3>项目三 购物网站（毕业设计）</h3>
+                <p>Flask后端模板渲染开发，实现商品浏览与购买、购物车、后台管理等功能</p>
+                
+                <a href="https://portfolio-back-shoppingweb-285737-7-1451401161.sh.run.tcloudbase.com" class="enter-btn" target="_blank">进入项目</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
