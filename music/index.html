@@ -42,7 +42,7 @@
                 <div class="tab_area">
                     <button :class="{ active: pageName === 'music' }" @click="showMusicPage">🎶 音乐库</button>
                     <button :class="{ active: pageName === 'favorite' }" @click="showFavoritePage">❤️ 我的收藏</button>
-                    <button :class="{ active: pageName === 'playlist' || pageName === 'playlistDetail' }" @click="showPlaylistPage">📋 播放列表</button>
+                    <button :class="{ active: pageName === 'playlist' || pageName === 'playlistDetail' }" @click="showPlaylistPage">📋 我的歌单</button>
                 </div>
 
                 <div class="user_box">
@@ -130,20 +130,20 @@
                     </div>
                 </section>
 
-                <!-- 播放列表 -->
+                <!-- 歌单 -->
                 <section id="playlist_box" v-show="pageName === 'playlist'" class="page_section">
                     <div class="page_title">
-                        <h2>播放列表</h2>
+                        <h2>我的歌单</h2>
                         <p>创建自己的歌单，然后从音乐库添加歌曲。</p>
                     </div>
 
                     <div class="add_area">
-                        <input type="text" v-model="newPlaylistName" placeholder="播放列表名称">
-                        <textarea v-model="newPlaylistDesc" placeholder="播放列表简介，可以不填"></textarea>
-                        <button @click="createPlaylist">新建播放列表</button>
+                        <input type="text" v-model="newPlaylistName" placeholder="歌单名称">
+                        <textarea v-model="newPlaylistDesc" placeholder="歌单简介，可以不填"></textarea>
+                        <button @click="createPlaylist">新建歌单</button>
                     </div>
 
-                    <div class="empty_text" v-if="playlistList.length === 0">暂无播放列表</div>
+                    <div class="empty_text" v-if="playlistList.length === 0">暂无歌单</div>
 
                     <div class="playlist_item" v-for="list in playlistList">
                         <div @click="getPlaylistDetail(list.id)">
@@ -156,7 +156,7 @@
                     </div>
                 </section>
 
-                <!-- 播放列表详情 -->
+                <!-- 歌单详情 -->
                 <section id="playlist_detail" v-show="pageName === 'playlistDetail'" class="page_section">
                     <div class="detail_header">
                         <div>
@@ -166,7 +166,7 @@
                         <button class="gray_btn" @click="showPlaylistPage">返回</button>
                     </div>
 
-                    <div class="empty_text" v-if="currentPlaylist.musics.length === 0">这个播放列表还没有歌曲</div>
+                    <div class="empty_text" v-if="currentPlaylist.musics.length === 0">这个歌单还没有歌曲</div>
 
                     <div class="music_item" v-for="music in currentPlaylist.musics">
                         <div class="music_left" @click="playMusic(music)">
