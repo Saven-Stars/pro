@@ -273,7 +273,7 @@ let vm = new Vue({
             });
         },
         /**
-         * 获取播放列表
+         * 获取歌单
          */
         getPlaylistList() {
             this.getAjax("/playlist/list", (res) => {
@@ -283,12 +283,12 @@ let vm = new Vue({
             });
         },
         /**
-         * 新建播放列表
+         * 新建歌单
          */
         createPlaylist() {
             let name = this.newPlaylistName.trim();
             if (!name) {
-                alert("播放列表名称不能为空");
+                alert("歌单名称不能为空");
                 return;
             }
             this.postAjax("/playlist/create", {
@@ -304,10 +304,10 @@ let vm = new Vue({
             });
         },
         /**
-         * 删除播放列表
+         * 删除歌单
          */
         deletePlaylist(playlistId) {
-            if (!confirm("确定删除这个播放列表？")) {
+            if (!confirm("确定删除这个歌单？")) {
                 return;
             }
             this.postAjax("/playlist/delete/" + playlistId, {}, (res) => {
@@ -318,7 +318,7 @@ let vm = new Vue({
             });
         },
         /**
-         * 获取播放列表详情
+         * 获取歌单详情
          */
         getPlaylistDetail(playlistId) {
             this.getAjax("/playlist/detail/" + playlistId, (res) => {
@@ -332,7 +332,7 @@ let vm = new Vue({
             });
         },
         /**
-         * 添加歌曲到播放列表
+         * 添加歌曲到歌单
          */
         addToPlaylist(music) {
             if (!music.selectPlaylistId) {
@@ -351,10 +351,10 @@ let vm = new Vue({
             });
         },
         /**
-         * 从播放列表移除歌曲
+         * 从歌单移除歌曲
          */
         removeFromPlaylist(musicId) {
-            if (!confirm("确定从播放列表移除这首歌？")) {
+            if (!confirm("确定从歌单移除这首歌？")) {
                 return;
             }
             this.postAjax("/playlist/remove_music", {
