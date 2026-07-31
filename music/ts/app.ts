@@ -21,11 +21,11 @@ interface MusicItem {
     play_count: number;
 
     // 这个字段不是后端返回的，是前端自己加的
-    // 用来记录“这首歌要添加到哪个播放列表”
+    // 用来记录“这首歌要添加到哪个歌单”
     selectPlaylistId?: number | string;
 }
 
-// 播放列表的大概格式
+// 歌单的大概格式
 interface PlaylistItem {
     id: number;
     name: string;
@@ -63,8 +63,10 @@ let vm = new Vue({
         musicList: [] as MusicItem[],
         favoriteList: [] as MusicItem[],
         currentMusic: null as MusicItem | null,
+        // 音频加载反馈状态
+        isAudioLoading: false,
 
-        // 播放列表数据
+        // 歌单数据
         playlistList: [] as PlaylistItem[],
         newPlaylistName: "",
         newPlaylistDesc: "",
@@ -217,7 +219,7 @@ let vm = new Vue({
         },
 
         /**
-         * 显示播放列表页
+         * 显示歌单页
          */
         showPlaylistPage() {
             this.pageName = "playlist";
@@ -345,7 +347,7 @@ let vm = new Vue({
         },
 
         /**
-         * 获取播放列表
+         * 获取歌单
          */
         getPlaylistList() {
             this.getAjax("/playlist/list", (res: any) => {
@@ -356,13 +358,13 @@ let vm = new Vue({
         },
 
         /**
-         * 新建播放列表
+         * 新建歌单
          */
         createPlaylist() {
             let name = this.newPlaylistName.trim();
 
             if (!name) {
-                alert("播放列表名称不能为空");
+                alert("歌单名称不能为空");
                 return;
             }
 
@@ -381,10 +383,10 @@ let vm = new Vue({
         },
 
         /**
-         * 删除播放列表
+         * 删除歌单
          */
         deletePlaylist(playlistId: number) {
-            if (!confirm("确定删除这个播放列表？")) {
+            if (!confirm("确定删除这个歌单？")) {
                 return;
             }
 
@@ -398,7 +400,7 @@ let vm = new Vue({
         },
 
         /**
-         * 获取播放列表详情
+         * 获取歌单详情
          */
         getPlaylistDetail(playlistId: number) {
             this.getAjax("/playlist/detail/" + playlistId, (res: any) => {
@@ -412,7 +414,7 @@ let vm = new Vue({
         },
 
         /**
-         * 添加歌曲到播放列表
+         * 添加歌曲到歌单
          */
         addToPlaylist(music: MusicItem) {
             if (!music.selectPlaylistId) {
@@ -434,10 +436,10 @@ let vm = new Vue({
         },
 
         /**
-         * 从播放列表移除歌曲
+         * 从歌单移除歌曲
          */
         removeFromPlaylist(musicId: number) {
-            if (!confirm("确定从播放列表移除这首歌？")) {
+            if (!confirm("确定从歌单移除这首歌？")) {
                 return;
             }
 
@@ -459,13 +461,21 @@ let vm = new Vue({
          */
         playMusic(music: MusicItem) {
             this.currentMusic = music;
+            this.isAudioLoading = true;
 
             // 等页面上的 audio 标签更新 src 后再播放
             this.$nextTick(() => {
                 let audio = document.getElementById("audio_player") as HTMLAudioElement;
 
                 if (audio) {
-                    audio.play();
+                    audio.load();
+                    let playResult = audio.play();
+
+                    if (playResult && typeof playResult.catch === "function") {
+                        playResult.catch(() => {
+                            this.isAudioLoading = false;
+                        });
+                    }
                 }
             });
         },
@@ -483,6 +493,20 @@ let vm = new Vue({
             let secText = sec < 10 ? "0" + sec : String(sec);
 
             return min + ":" + secText;
+        },
+
+        /**
+         * 音频开始加载回调
+         */
+        onAudioLoadStart() {
+            this.isAudioLoading = true;
+        },
+
+        /**
+         * 音频可播放回调
+         */
+        onAudioCanPlay() {
+            this.isAudioLoading = false;
         }
     },
 
