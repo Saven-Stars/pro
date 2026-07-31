@@ -5,15 +5,8 @@
     <title>音乐播放器</title>
     <!-- 引入样式文件 -->
     <link rel="stylesheet" href="css/style.css"> 
-    <!-- 
-    defer允许js的下载与页面渲染同步进行，而且下完后等待页面渲染完再执行，不会阻塞画页面；
-    async允许js的下载与页面渲染同步进行，但下完后立刻执行，会阻塞画页面；
-    库文件放开头，不设置这两个属性中的一个，则下载时打断渲染，下载完也会打断渲染，执行完才开始渲染，效果最不佳
-     -->
-    <!-- 本地 jQuery -->
-    <script src="js/jquery-4.0.0.js" defer></script>
-    <!-- 本地 Vue2，使用 new Vue 写法 -->
-    <script src="js/vue.js" defer></script>
+   
+   
 </head>
 <body>
     <div id="app">
@@ -167,7 +160,10 @@
         </div>
     </div>
 
-    
+     <!-- 本地 jQuery -->
+    <script src="js/jquery-4.0.0.js" ></script>
+    <!-- 本地 Vue2，使用 new Vue 写法 -->
+    <script src="js/vue.js" ></script>
     
     <!-- 业务脚本，由 ts/app.ts 编译生成 -->
     <script src="js/app.js"></script>
