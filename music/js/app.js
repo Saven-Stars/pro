@@ -372,7 +372,6 @@ let vm = new Vue({
          */
         playMusic(music) {
             this.currentMusic = music;
-            this.isAudioLoading = true;//音频加载反馈
             // 等页面上的 audio 标签更新 src 后再播放
             this.$nextTick(() => {
                 let audio = document.getElementById("audio_player");
