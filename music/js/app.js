@@ -382,10 +382,10 @@ let vm = new Vue({
                     let playResult = audio.play();
 
                     if (playResult && typeof playResult.catch === "function") {
-                playResult.catch(() => {
-                    this.isAudioLoading = false;
-                });
-            }
+                        playResult.catch(() => {
+                            this.isAudioLoading = false;
+                        });
+                    }
 
                 }
             });
@@ -401,17 +401,20 @@ let vm = new Vue({
             let sec = Math.floor(seconds % 60);
             let secText = sec < 10 ? "0" + sec : String(sec);
             return min + ":" + secText;
+        },
+
+        //音频加载反馈
+        onAudioLoadStart() {
+            this.isAudioLoading = true;
+        },
+
+        onAudioCanPlay() {
+            this.isAudioLoading = false;
         }
+
     },
     mounted() {
         this.checkLogin();
-    },
-    //音频加载反馈
-    onAudioLoadStart() {
-        this.isAudioLoading = true;
-    },
-
-    onAudioCanPlay() {
-        this.isAudioLoading = false;
     }
+
 });
