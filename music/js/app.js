@@ -2,7 +2,7 @@
 // 后端接口基础地址
 // 本地开发时用 127.0.0.1:5100
 // 如果以后后端部署到 Railway，只需要改这里
-let baseUrl = "http://127.0.0.1:5100";
+let baseUrl = "https://musiplayer.up.railway.app";
 // 使用 Vue2 的 new Vue 写法
 let vm = new Vue({
     el: "#app",
