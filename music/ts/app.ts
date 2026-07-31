@@ -63,8 +63,6 @@ let vm = new Vue({
         musicList: [] as MusicItem[],
         favoriteList: [] as MusicItem[],
         currentMusic: null as MusicItem | null,
-        // 音频加载反馈状态
-        isAudioLoading: false,
 
         // 歌单数据
         playlistList: [] as PlaylistItem[],
@@ -461,7 +459,6 @@ let vm = new Vue({
          */
         playMusic(music: MusicItem) {
             this.currentMusic = music;
-            this.isAudioLoading = true;
 
             // 等页面上的 audio 标签更新 src 后再播放
             this.$nextTick(() => {
@@ -469,13 +466,7 @@ let vm = new Vue({
 
                 if (audio) {
                     audio.load();
-                    let playResult = audio.play();
-
-                    if (playResult && typeof playResult.catch === "function") {
-                        playResult.catch(() => {
-                            this.isAudioLoading = false;
-                        });
-                    }
+                    audio.play();
                 }
             });
         },
@@ -493,20 +484,6 @@ let vm = new Vue({
             let secText = sec < 10 ? "0" + sec : String(sec);
 
             return min + ":" + secText;
-        },
-
-        /**
-         * 音频开始加载回调
-         */
-        onAudioLoadStart() {
-            this.isAudioLoading = true;
-        },
-
-        /**
-         * 音频可播放回调
-         */
-        onAudioCanPlay() {
-            this.isAudioLoading = false;
         }
     },
 
