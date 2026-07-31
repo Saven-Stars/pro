@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>音乐播放器</title>
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 登录注册模块 -->
+        <div id="auth_box" v-if="!currentUser">
+            <div class="auth_card">
+                <h2>{{ isLoginMode ? "登录" : "注册" }}</h2>
+
+                <input type="text" v-model="username" placeholder="请输入用户名">
+                <input type="password" v-model="password" placeholder="请输入密码" @keyup.enter="authUser">
+
+                <button @click="authUser">{{ isLoginMode ? "登录" : "注册" }}</button>
+
+                <p id="switch_text" @click="switchAuthMode">
+                    {{ isLoginMode ? "没有账号？去注册" : "已有账号？去登录" }}
+                </p>
+            </div>
+        </div>
+
+        <!-- 音乐管理模块，登录后显示 -->
+        <div id="music_box" v-if="currentUser">
+            <div class="header">
+                <span>欢迎，<span>{{ currentUser.username }}</span></span>
+                <button id="logout_btn" @click="logout">退出登录</button>
+            </div>
+
+            <!-- 搜索区域 -->
+            <div class="search_area">
+                <input type="text" v-model="keyword" placeholder="搜索歌曲或歌手" @keyup.enter="getMusicList">
+
+                <select v-model="category" @change="getMusicList">
+                    <option value="">全部分类</option>
+                    <option v-for="item in categoryList" :value="item">{{ item }}</option>
+                </select>
+
+                <button @click="getMusicList">搜索</button>
+                <button class="gray_btn" @click="clearSearch">清空</button>
+            </div>
+
+            <!-- 菜单切换 -->
+            <div class="tab_area">
+                <button :class="{ active: pageName === 'music' }" @click="showMusicPage">音乐库</button>
+                <button :class="{ active: pageName === 'favorite' }" @click="showFavoritePage">我的收藏</button>
+                <button :class="{ active: pageName === 'playlist' }" @click="showPlaylistPage">播放列表</button>
+            </div>
+
+            <!-- 音乐库 -->
+            <div id="music_list" v-show="pageName === 'music'">
+                <div class="empty_text" v-if="musicList.length === 0">暂无音乐</div>
+
+                <div class="music_item" v-for="music in musicList">
+                    <div class="music_left" @click="playMusic(music)">
+                        <div class="cover">♪</div>
+                        <div>
+                            <h3>{{ music.title }}</h3>
+                            <p>{{ music.artist }} - {{ music.album || "未知专辑" }}</p>
+                            <div class="small_text">
+                                {{ music.category || "未分类" }} / {{ formatTime(music.duration) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="music_right">
+                        <button @click="toggleFavorite(music)">
+                            {{ isFavorite(music.id) ? "取消收藏" : "收藏" }}
+                        </button>
+
+                        <select v-model="music.selectPlaylistId">
+                            <option value="">选择歌单</option>
+                            <option v-for="list in playlistList" :value="list.id">{{ list.name }}</option>
+                        </select>
+
+                        <button class="gray_btn" @click="addToPlaylist(music)">添加</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 我的收藏 -->
+            <div id="favorite_list" v-show="pageName === 'favorite'">
+                <div class="empty_text" v-if="favoriteList.length === 0">暂无收藏</div>
+
+                <div class="music_item" v-for="music in favoriteList">
+                    <div class="music_left" @click="playMusic(music)">
+                        <div class="cover">♪</div>
+                        <div>
+                            <h3>{{ music.title }}</h3>
+                            <p>{{ music.artist }} - {{ music.album || "未知专辑" }}</p>
+                            <div class="small_text">{{ music.category || "未分类" }}</div>
+                        </div>
+                    </div>
+
+                    <button class="del_btn" @click="removeFavorite(music.id)">取消收藏</button>
+                </div>
+            </div>
+
+            <!-- 播放列表 -->
+            <div id="playlist_box" v-show="pageName === 'playlist'">
+                <div class="add_area">
+                    <input type="text" v-model="newPlaylistName" placeholder="播放列表名称">
+                    <textarea v-model="newPlaylistDesc" placeholder="播放列表简介，可以不填"></textarea>
+                    <button @click="createPlaylist">新建播放列表</button>
+                </div>
+
+                <div class="empty_text" v-if="playlistList.length === 0">暂无播放列表</div>
+
+                <div class="playlist_item" v-for="list in playlistList">
+                    <div @click="getPlaylistDetail(list.id)">
+                        <h3>{{ list.name }}</h3>
+                        <p>{{ list.description || "暂无简介" }}</p>
+                        <div class="small_text">{{ list.music_count }} 首歌曲</div>
+                    </div>
+
+                    <button class="del_btn" @click="deletePlaylist(list.id)">删除</button>
+                </div>
+            </div>
+
+            <!-- 播放列表详情 -->
+            <div id="playlist_detail" v-show="pageName === 'playlistDetail'">
+                <div class="detail_header">
+                    <div>
+                        <h2>{{ currentPlaylist.name }}</h2>
+                        <p>{{ currentPlaylist.description || "暂无简介" }}</p>
+                    </div>
+                    <button class="gray_btn" @click="showPlaylistPage">返回</button>
+                </div>
+
+                <div class="empty_text" v-if="currentPlaylist.musics.length === 0">这个播放列表还没有歌曲</div>
+
+                <div class="music_item" v-for="music in currentPlaylist.musics">
+                    <div class="music_left" @click="playMusic(music)">
+                        <div class="cover">♪</div>
+                        <div>
+                            <h3>{{ music.title }}</h3>
+                            <p>{{ music.artist }} - {{ music.album || "未知专辑" }}</p>
+                        </div>
+                    </div>
+
+                    <button class="del_btn" @click="removeFromPlaylist(music.id)">移除</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部播放器 -->
+        <div id="player_box" v-if="currentMusic">
+            <div>
+                <h3>{{ currentMusic.title }}</h3>
+                <p>{{ currentMusic.artist }}</p>
+            </div>
+
+            <audio id="audio_player" :src="currentMusic.url" controls></audio>
+        </div>
+    </div>
+
+    <!-- 本地 jQuery -->
+    <script src="js/jquery-4.0.0.js"></script>
+    <!-- 本地 Vue2，使用 new Vue 写法 -->
+    <script src="js/vue.js"></script>
+    <!-- 业务脚本，由 ts/app.ts 编译生成 -->
+    <script src="js/app.js"></script>
+</body>
+</html>
