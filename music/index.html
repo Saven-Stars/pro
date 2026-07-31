@@ -199,9 +199,7 @@
 				</div>
 			</div>
 
-			<audio id="audio_player" :src="currentMusic.url" controls preload="auto" 
-                @loadstart="onAudioLoadStart"   @waiting="onAudioLoadStart"
-			    @canplay="onAudioCanPlay"   @playing="onAudioCanPlay">
+			<audio id="audio_player" :src="currentMusic.url" controls preload="auto" >
 			</audio>
 		</div>
 	</div>
